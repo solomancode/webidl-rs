@@ -17,6 +17,7 @@ lalrpop = "0.17"
 
 [dependencies]
 lalrpop-util = "0.17"
+serde = "1.0.204"
 
 [dev-dependencies]
 zip = "0.5"

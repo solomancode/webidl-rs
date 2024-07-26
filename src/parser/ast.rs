@@ -1,5 +1,7 @@
 #![allow(missing_docs)]
 
+use serde::Serialize;
+
 pub type AST = Vec<Definition>;
 pub type Identifier = String;
 
@@ -9,7 +11,7 @@ pub type Identifier = String;
 // matched into other structures, but I suppose it is not a big deal.
 
 /// Do not use - for grammar use only.
-#[derive(Clone, Copy, Debug, Eq, Hash, PartialEq)]
+#[derive(Serialize, Clone, Copy, Debug, Eq, Hash, PartialEq)]
 pub enum BufferRelatedType {
     ArrayBuffer,
     DataView,
@@ -25,7 +27,7 @@ pub enum BufferRelatedType {
 }
 
 /// Do not use - for grammar use only.
-#[derive(Clone, Copy, Debug, Eq, Hash, PartialEq)]
+#[derive(Serialize, Clone, Copy, Debug, Eq, Hash, PartialEq)]
 pub enum PrimitiveType {
     Boolean,
     Byte,
@@ -35,14 +37,14 @@ pub enum PrimitiveType {
 }
 
 /// Do not use - for grammar use only.
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Serialize, Clone, Debug, PartialEq)]
 pub enum Stringifier {
     Attribute(Attribute),
     Operation(Operation),
 }
 
 /// Do not use - for grammar use only.
-#[derive(Clone, Copy, Debug, Eq, Hash, PartialEq)]
+#[derive(Serialize, Clone, Copy, Debug, Eq, Hash, PartialEq)]
 pub enum UnrestrictedFloatType {
     RestrictedDouble,
     RestrictedFloat,
@@ -51,7 +53,7 @@ pub enum UnrestrictedFloatType {
 }
 
 /// Do not use - for grammar use only.
-#[derive(Clone, Copy, Debug, Eq, Hash, PartialEq)]
+#[derive(Serialize, Clone, Copy, Debug, Eq, Hash, PartialEq)]
 pub enum UnsignedIntegerType {
     SignedLong,
     SignedLongLong,
@@ -63,7 +65,7 @@ pub enum UnsignedIntegerType {
 
 // Publically available AST structures
 
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Serialize, Clone, Debug, PartialEq)]
 pub struct Argument {
     pub extended_attributes: Vec<ExtendedAttribute>,
     pub default: Option<DefaultValue>,
@@ -73,20 +75,20 @@ pub struct Argument {
     pub variadic: bool,
 }
 
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Serialize, Clone, Debug, PartialEq)]
 pub struct ArgumentListExtendedAttribute {
     pub arguments: Vec<Argument>,
     pub name: Identifier,
 }
 
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Serialize, Clone, Debug, PartialEq)]
 pub enum Attribute {
     Regular(RegularAttribute),
     Static(StaticAttribute),
     Stringifier(StringifierAttribute),
 }
 
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Serialize, Clone, Debug, PartialEq)]
 pub struct Callback {
     pub arguments: Vec<Argument>,
     pub extended_attributes: Vec<ExtendedAttribute>,
@@ -94,7 +96,7 @@ pub struct Callback {
     pub return_type: ReturnType,
 }
 
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Serialize, Clone, Debug, PartialEq)]
 pub struct CallbackInterface {
     pub extended_attributes: Vec<ExtendedAttribute>,
     pub inherits: Option<Identifier>,
@@ -102,7 +104,7 @@ pub struct CallbackInterface {
     pub name: Identifier,
 }
 
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Serialize, Clone, Debug, PartialEq)]
 pub struct Const {
     pub extended_attributes: Vec<ExtendedAttribute>,
     pub name: Identifier,
@@ -112,7 +114,7 @@ pub struct Const {
 }
 
 #[allow(variant_size_differences)]
-#[derive(Clone, Debug, Eq, Hash, PartialEq)]
+#[derive(Serialize, Clone, Debug, Eq, Hash, PartialEq)]
 pub enum ConstType {
     Boolean,
     Byte,
@@ -130,7 +132,7 @@ pub enum ConstType {
     UnsignedShort,
 }
 
-#[derive(Clone, Copy, Debug, PartialEq)]
+#[derive(Serialize, Clone, Copy, Debug, PartialEq)]
 pub enum ConstValue {
     BooleanLiteral(bool),
     FloatLiteral(f64),
@@ -139,20 +141,20 @@ pub enum ConstValue {
     UnsignedIntegerLiteral(u64),
 }
 
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Serialize, Clone, Debug, PartialEq)]
 pub struct Constructor {
     pub extended_attributes: Vec<ExtendedAttribute>,
     pub arguments: Vec<Argument>,
 }
 
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Serialize, Clone, Debug, PartialEq)]
 pub enum DefaultValue {
     ConstValue(ConstValue),
     EmptySequence,
     StringLiteral(String),
 }
 
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Serialize, Clone, Debug, PartialEq)]
 pub enum Definition {
     Callback(Callback),
     Dictionary(Dictionary),
@@ -165,13 +167,13 @@ pub enum Definition {
     Typedef(Typedef),
 }
 
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Serialize, Clone, Debug, PartialEq)]
 pub enum Dictionary {
     NonPartial(NonPartialDictionary),
     Partial(PartialDictionary),
 }
 
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Serialize, Clone, Debug, PartialEq)]
 pub struct DictionaryMember {
     pub default: Option<DefaultValue>,
     pub extended_attributes: Vec<ExtendedAttribute>,
@@ -180,14 +182,14 @@ pub struct DictionaryMember {
     pub type_: Type,
 }
 
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Serialize, Clone, Debug, PartialEq)]
 pub struct Enum {
     pub extended_attributes: Vec<ExtendedAttribute>,
     pub name: String,
     pub variants: Vec<String>,
 }
 
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Serialize, Clone, Debug, PartialEq)]
 pub struct ExplicitStringifierOperation {
     pub arguments: Vec<Argument>,
     pub extended_attributes: Vec<ExtendedAttribute>,
@@ -195,7 +197,7 @@ pub struct ExplicitStringifierOperation {
     pub return_type: ReturnType,
 }
 
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Serialize, Clone, Debug, PartialEq)]
 pub enum ExtendedAttribute {
     ArgumentList(ArgumentListExtendedAttribute),
     Identifier(IdentifierExtendedAttribute),
@@ -205,13 +207,13 @@ pub enum ExtendedAttribute {
     // Other(OtherExtendedAttribute),
 }
 
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Serialize, Clone, Debug, PartialEq)]
 pub struct IdentifierExtendedAttribute {
     pub lhs: Identifier,
     pub rhs: Other,
 }
 
-#[derive(Clone, Debug, Eq, Hash, PartialEq)]
+#[derive(Serialize, Clone, Debug, Eq, Hash, PartialEq)]
 pub struct IdentifierListExtendedAttribute {
     pub lhs: Identifier,
     pub rhs: Vec<Identifier>,
@@ -219,33 +221,33 @@ pub struct IdentifierListExtendedAttribute {
 
 /// Note that this is no longer a part of the WebIDL specification, but exists for backwards
 /// compatibility of older WebIDLs.
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Serialize, Clone, Debug, PartialEq)]
 pub struct Implements {
     pub extended_attributes: Vec<ExtendedAttribute>,
     pub implementer: Identifier,
     pub implementee: Identifier,
 }
 
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Serialize, Clone, Debug, PartialEq)]
 pub struct ImplicitStringifierOperation {
     pub extended_attributes: Vec<ExtendedAttribute>,
 }
 
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Serialize, Clone, Debug, PartialEq)]
 pub struct Includes {
     pub extended_attributes: Vec<ExtendedAttribute>,
     pub includee: Identifier,
     pub includer: Identifier,
 }
 
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Serialize, Clone, Debug, PartialEq)]
 pub enum Interface {
     Callback(CallbackInterface),
     NonPartial(NonPartialInterface),
     Partial(PartialInterface),
 }
 
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Serialize, Clone, Debug, PartialEq)]
 pub enum InterfaceMember {
     Constructor(Constructor),
     Attribute(Attribute),
@@ -256,14 +258,14 @@ pub enum InterfaceMember {
     Setlike(Setlike),
 }
 
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Serialize, Clone, Debug, PartialEq)]
 pub struct Iterable {
     pub extended_attributes: Vec<ExtendedAttribute>,
     pub key_type: Option<Type>,
     pub value_type: Type,
 }
 
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Serialize, Clone, Debug, PartialEq)]
 pub struct Maplike {
     pub extended_attributes: Vec<ExtendedAttribute>,
     pub key_type: Type,
@@ -271,39 +273,39 @@ pub struct Maplike {
     pub value_type: Type,
 }
 
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Serialize, Clone, Debug, PartialEq)]
 pub enum Mixin {
     NonPartial(NonPartialMixin),
     Partial(PartialMixin),
 }
 
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Serialize, Clone, Debug, PartialEq)]
 pub enum MixinMember {
     Attribute(Attribute),
     Const(Const),
     Operation(Operation),
 }
 
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Serialize, Clone, Debug, PartialEq)]
 pub struct NamedArgumentListExtendedAttribute {
     pub lhs_name: Identifier,
     pub rhs_arguments: Vec<Argument>,
     pub rhs_name: Identifier,
 }
 
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Serialize, Clone, Debug, PartialEq)]
 pub enum Namespace {
     NonPartial(NonPartialNamespace),
     Partial(PartialNamespace),
 }
 
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Serialize, Clone, Debug, PartialEq)]
 pub enum NamespaceMember {
     Attribute(Attribute),
     Operation(Operation),
 }
 
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Serialize, Clone, Debug, PartialEq)]
 pub struct NonPartialDictionary {
     pub extended_attributes: Vec<ExtendedAttribute>,
     pub inherits: Option<Identifier>,
@@ -311,7 +313,7 @@ pub struct NonPartialDictionary {
     pub name: Identifier,
 }
 
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Serialize, Clone, Debug, PartialEq)]
 pub struct NonPartialInterface {
     pub extended_attributes: Vec<ExtendedAttribute>,
     pub inherits: Option<Identifier>,
@@ -319,21 +321,21 @@ pub struct NonPartialInterface {
     pub name: Identifier,
 }
 
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Serialize, Clone, Debug, PartialEq)]
 pub struct NonPartialMixin {
     pub extended_attributes: Vec<ExtendedAttribute>,
     pub members: Vec<MixinMember>,
     pub name: Identifier,
 }
 
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Serialize, Clone, Debug, PartialEq)]
 pub struct NonPartialNamespace {
     pub extended_attributes: Vec<ExtendedAttribute>,
     pub members: Vec<NamespaceMember>,
     pub name: Identifier,
 }
 
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Serialize, Clone, Debug, PartialEq)]
 pub enum Operation {
     Regular(RegularOperation),
     Special(SpecialOperation),
@@ -341,7 +343,7 @@ pub enum Operation {
     Stringifier(StringifierOperation),
 }
 
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Serialize, Clone, Debug, PartialEq)]
 pub enum Other {
     Any,
     ArrayBuffer,
@@ -421,7 +423,7 @@ pub enum Other {
     Semicolon,
 }
 
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Serialize, Clone, Debug, PartialEq)]
 pub enum OtherExtendedAttribute {
     Nested {
         group_type: OtherExtendedAttributeGroupType,
@@ -434,42 +436,42 @@ pub enum OtherExtendedAttribute {
     },
 }
 
-#[derive(Clone, Copy, Debug, Eq, Hash, PartialEq)]
+#[derive(Serialize, Clone, Copy, Debug, Eq, Hash, PartialEq)]
 pub enum OtherExtendedAttributeGroupType {
     Brace,
     Bracket,
     Parenthesis,
 }
 
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Serialize, Clone, Debug, PartialEq)]
 pub struct PartialDictionary {
     pub extended_attributes: Vec<ExtendedAttribute>,
     pub members: Vec<DictionaryMember>,
     pub name: Identifier,
 }
 
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Serialize, Clone, Debug, PartialEq)]
 pub struct PartialInterface {
     pub extended_attributes: Vec<ExtendedAttribute>,
     pub members: Vec<InterfaceMember>,
     pub name: Identifier,
 }
 
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Serialize, Clone, Debug, PartialEq)]
 pub struct PartialMixin {
     pub extended_attributes: Vec<ExtendedAttribute>,
     pub members: Vec<MixinMember>,
     pub name: Identifier,
 }
 
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Serialize, Clone, Debug, PartialEq)]
 pub struct PartialNamespace {
     pub extended_attributes: Vec<ExtendedAttribute>,
     pub members: Vec<NamespaceMember>,
     pub name: Identifier,
 }
 
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Serialize, Clone, Debug, PartialEq)]
 pub struct RegularAttribute {
     pub extended_attributes: Vec<ExtendedAttribute>,
     pub inherits: bool,
@@ -478,7 +480,7 @@ pub struct RegularAttribute {
     pub type_: Type,
 }
 
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Serialize, Clone, Debug, PartialEq)]
 pub struct RegularOperation {
     pub arguments: Vec<Argument>,
     pub extended_attributes: Vec<ExtendedAttribute>,
@@ -486,20 +488,20 @@ pub struct RegularOperation {
     pub return_type: ReturnType,
 }
 
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Serialize, Clone, Debug, PartialEq)]
 pub enum ReturnType {
     NonVoid(Type),
     Void,
 }
 
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Serialize, Clone, Debug, PartialEq)]
 pub struct Setlike {
     pub extended_attributes: Vec<ExtendedAttribute>,
     pub read_only: bool,
     pub type_: Type,
 }
 
-#[derive(Clone, Copy, Debug, Eq, Hash, PartialEq)]
+#[derive(Serialize, Clone, Copy, Debug, Eq, Hash, PartialEq)]
 pub enum Special {
     Deleter,
     Getter,
@@ -507,7 +509,7 @@ pub enum Special {
     Setter,
 }
 
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Serialize, Clone, Debug, PartialEq)]
 pub struct SpecialOperation {
     pub arguments: Vec<Argument>,
     pub extended_attributes: Vec<ExtendedAttribute>,
@@ -516,7 +518,7 @@ pub struct SpecialOperation {
     pub special_keywords: Vec<Special>,
 }
 
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Serialize, Clone, Debug, PartialEq)]
 pub struct StaticAttribute {
     pub extended_attributes: Vec<ExtendedAttribute>,
     pub name: Identifier,
@@ -524,7 +526,7 @@ pub struct StaticAttribute {
     pub type_: Type,
 }
 
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Serialize, Clone, Debug, PartialEq)]
 pub struct StaticOperation {
     pub arguments: Vec<Argument>,
     pub extended_attributes: Vec<ExtendedAttribute>,
@@ -532,14 +534,14 @@ pub struct StaticOperation {
     pub return_type: ReturnType,
 }
 
-#[derive(Clone, Copy, Debug, Eq, Hash, PartialEq)]
+#[derive(Serialize, Clone, Copy, Debug, Eq, Hash, PartialEq)]
 pub enum StringType {
     ByteString,
     DOMString,
     USVString,
 }
 
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Serialize, Clone, Debug, PartialEq)]
 pub struct StringifierAttribute {
     pub extended_attributes: Vec<ExtendedAttribute>,
     pub name: Identifier,
@@ -548,20 +550,20 @@ pub struct StringifierAttribute {
 }
 
 #[allow(variant_size_differences)]
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Serialize, Clone, Debug, PartialEq)]
 pub enum StringifierOperation {
     Explicit(ExplicitStringifierOperation),
     Implicit(ImplicitStringifierOperation),
 }
 
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Serialize, Clone, Debug, PartialEq)]
 pub struct Type {
     pub extended_attributes: Vec<ExtendedAttribute>,
     pub kind: TypeKind,
     pub nullable: bool,
 }
 
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Serialize, Clone, Debug, PartialEq)]
 pub enum TypeKind {
     Any,
     ArrayBuffer,
@@ -602,7 +604,7 @@ pub enum TypeKind {
     UnsignedShort,
 }
 
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Serialize, Clone, Debug, PartialEq)]
 pub struct Typedef {
     pub extended_attributes: Vec<ExtendedAttribute>,
     pub name: Identifier,
